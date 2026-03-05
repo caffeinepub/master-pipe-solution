@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
-import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import AboutSection from "./components/AboutSection";
+import AdminPanel from "./components/AdminPanel";
 import ContactSection from "./components/ContactSection";
 import DevotionalDivider from "./components/DevotionalDivider";
 import Footer from "./components/Footer";
@@ -10,9 +10,11 @@ import Navbar from "./components/Navbar";
 import ServicesSection from "./components/ServicesSection";
 import WhyChooseUs from "./components/WhyChooseUs";
 import { useActor } from "./hooks/useActor";
-import { type LangKey, Language } from "./lib/language";
+import type { LangKey } from "./lib/language";
 
-export default function App() {
+// ─── Main Site ────────────────────────────────────────────────────────────────
+
+function MainSite() {
   const [lang, setLang] = useState<LangKey>("en");
   const { actor } = useActor();
 
@@ -62,4 +64,21 @@ export default function App() {
       </a>
     </div>
   );
+}
+
+// ─── Root Router ──────────────────────────────────────────────────────────────
+
+const isAdminRoute = window.location.pathname === "/admin";
+
+export default function App() {
+  if (isAdminRoute) {
+    return (
+      <>
+        <Toaster richColors position="top-right" />
+        <AdminPanel />
+      </>
+    );
+  }
+
+  return <MainSite />;
 }

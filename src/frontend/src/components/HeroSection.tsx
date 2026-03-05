@@ -184,14 +184,14 @@ export default function HeroSection({ lang }: HeroSectionProps) {
           className="flex flex-wrap items-center justify-center gap-4 mt-12"
         >
           <a
-            href="tel:8535851119"
+            href="tel:8538851119"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-body transition-all duration-200"
             style={{
               backgroundColor: "oklch(0.28 0.07 215 / 0.5)",
               color: "oklch(0.78 0.15 78)",
             }}
           >
-            <span>📞</span> 8535851119
+            <span>📞</span> 8538851119
           </a>
           <a
             href="tel:9883004437"

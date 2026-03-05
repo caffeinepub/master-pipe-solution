@@ -36,18 +36,27 @@ export default function ContactSection({ lang }: ContactSectionProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !phone.trim() || !message.trim()) return;
-    if (!actor) return;
 
     setFormState("loading");
 
     try {
-      const language = lang === "en" ? Language.english : Language.hindi;
-      await actor.submitContact(
-        name.trim(),
-        phone.trim(),
-        message.trim(),
-        language,
+      // Save to backend
+      if (actor) {
+        const language = lang === "en" ? Language.english : Language.hindi;
+        await actor.submitContact(
+          name.trim(),
+          phone.trim(),
+          message.trim(),
+          language,
+        );
+      }
+
+      // Send message directly to WhatsApp
+      const waText = encodeURIComponent(
+        `New enquiry from Master Pipe Solution website:\n\nName: ${name.trim()}\nPhone: ${phone.trim()}\nMessage: ${message.trim()}`,
       );
+      window.open(`https://wa.me/919883004437?text=${waText}`, "_blank");
+
       setFormState("success");
       setName("");
       setPhone("");
@@ -66,8 +75,8 @@ export default function ContactSection({ lang }: ContactSectionProps) {
       icon: Phone,
       label: tx.contact.callUs,
       lines: [
-        <a key="1" href="tel:8535851119" className="hover:underline">
-          +91 8535851119
+        <a key="1" href="tel:8538851119" className="hover:underline">
+          +91 8538851119
         </a>,
         <a key="2" href="tel:9883004437" className="hover:underline">
           +91 9883004437

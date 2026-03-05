@@ -122,8 +122,8 @@ export default function Footer({ lang }: FooterProps) {
                   className="font-body text-sm space-y-1"
                   style={{ color: "oklch(0.65 0.04 215)" }}
                 >
-                  <a href="tel:8535851119" className="block hover:underline">
-                    +91 8535851119
+                  <a href="tel:8538851119" className="block hover:underline">
+                    +91 8538851119
                   </a>
                   <a href="tel:9883004437" className="block hover:underline">
                     +91 9883004437

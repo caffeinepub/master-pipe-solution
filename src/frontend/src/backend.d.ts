@@ -9,9 +9,11 @@ export interface None {
 export type Option<T> = Some<T> | None;
 export interface Contact {
     id: bigint;
+    status: string;
     name: string;
     language: Language;
     message: string;
+    timestamp: bigint;
     phone: string;
 }
 export enum Language {
@@ -22,7 +24,10 @@ export enum Language {
 export interface backendInterface {
     getAllContacts(): Promise<Array<Contact>>;
     getContact(id: bigint): Promise<Contact>;
+    getDefaultReply(): Promise<string>;
     getVisitCount(): Promise<bigint>;
     incrementVisits(): Promise<void>;
+    setDefaultReply(text: string): Promise<void>;
     submitContact(name: string, phone: string, message: string, language: Language): Promise<void>;
+    updateContactStatus(id: bigint, status: string): Promise<void>;
 }

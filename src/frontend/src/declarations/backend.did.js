@@ -15,18 +15,23 @@ export const Language = IDL.Variant({
 });
 export const Contact = IDL.Record({
   'id' : IDL.Nat,
+  'status' : IDL.Text,
   'name' : IDL.Text,
   'language' : Language,
   'message' : IDL.Text,
+  'timestamp' : IDL.Int,
   'phone' : IDL.Text,
 });
 
 export const idlService = IDL.Service({
   'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
   'getContact' : IDL.Func([IDL.Nat], [Contact], ['query']),
+  'getDefaultReply' : IDL.Func([], [IDL.Text], ['query']),
   'getVisitCount' : IDL.Func([], [IDL.Nat], ['query']),
   'incrementVisits' : IDL.Func([], [], []),
+  'setDefaultReply' : IDL.Func([IDL.Text], [], []),
   'submitContact' : IDL.Func([IDL.Text, IDL.Text, IDL.Text, Language], [], []),
+  'updateContactStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
 });
 
 export const idlInitArgs = [];
@@ -39,22 +44,27 @@ export const idlFactory = ({ IDL }) => {
   });
   const Contact = IDL.Record({
     'id' : IDL.Nat,
+    'status' : IDL.Text,
     'name' : IDL.Text,
     'language' : Language,
     'message' : IDL.Text,
+    'timestamp' : IDL.Int,
     'phone' : IDL.Text,
   });
   
   return IDL.Service({
     'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
     'getContact' : IDL.Func([IDL.Nat], [Contact], ['query']),
+    'getDefaultReply' : IDL.Func([], [IDL.Text], ['query']),
     'getVisitCount' : IDL.Func([], [IDL.Nat], ['query']),
     'incrementVisits' : IDL.Func([], [], []),
+    'setDefaultReply' : IDL.Func([IDL.Text], [], []),
     'submitContact' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, Language],
         [],
         [],
       ),
+    'updateContactStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   });
 };
 

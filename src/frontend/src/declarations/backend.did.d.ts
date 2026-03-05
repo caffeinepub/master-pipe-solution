@@ -12,9 +12,11 @@ import type { Principal } from '@icp-sdk/core/principal';
 
 export interface Contact {
   'id' : bigint,
+  'status' : string,
   'name' : string,
   'language' : Language,
   'message' : string,
+  'timestamp' : bigint,
   'phone' : string,
 }
 export type Language = { 'hindi' : null } |
@@ -23,9 +25,12 @@ export type Language = { 'hindi' : null } |
 export interface _SERVICE {
   'getAllContacts' : ActorMethod<[], Array<Contact>>,
   'getContact' : ActorMethod<[bigint], Contact>,
+  'getDefaultReply' : ActorMethod<[], string>,
   'getVisitCount' : ActorMethod<[], bigint>,
   'incrementVisits' : ActorMethod<[], undefined>,
+  'setDefaultReply' : ActorMethod<[string], undefined>,
   'submitContact' : ActorMethod<[string, string, string, Language], undefined>,
+  'updateContactStatus' : ActorMethod<[bigint, string], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

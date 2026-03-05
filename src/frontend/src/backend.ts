@@ -91,9 +91,11 @@ export class ExternalBlob {
 }
 export interface Contact {
     id: bigint;
+    status: string;
     name: string;
     language: Language;
     message: string;
+    timestamp: bigint;
     phone: string;
 }
 export enum Language {
@@ -104,9 +106,12 @@ export enum Language {
 export interface backendInterface {
     getAllContacts(): Promise<Array<Contact>>;
     getContact(id: bigint): Promise<Contact>;
+    getDefaultReply(): Promise<string>;
     getVisitCount(): Promise<bigint>;
     incrementVisits(): Promise<void>;
+    setDefaultReply(text: string): Promise<void>;
     submitContact(name: string, phone: string, message: string, language: Language): Promise<void>;
+    updateContactStatus(id: bigint, status: string): Promise<void>;
 }
 import type { Contact as _Contact, Language as _Language } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
@@ -139,6 +144,20 @@ export class Backend implements backendInterface {
             return from_candid_Contact_n2(this._uploadFile, this._downloadFile, result);
         }
     }
+    async getDefaultReply(): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getDefaultReply();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getDefaultReply();
+            return result;
+        }
+    }
     async getVisitCount(): Promise<bigint> {
         if (this.processError) {
             try {
@@ -167,6 +186,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async setDefaultReply(arg0: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.setDefaultReply(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.setDefaultReply(arg0);
+            return result;
+        }
+    }
     async submitContact(arg0: string, arg1: string, arg2: string, arg3: Language): Promise<void> {
         if (this.processError) {
             try {
@@ -181,6 +214,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async updateContactStatus(arg0: bigint, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateContactStatus(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateContactStatus(arg0, arg1);
+            return result;
+        }
+    }
 }
 function from_candid_Contact_n2(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: _Contact): Contact {
     return from_candid_record_n3(_uploadFile, _downloadFile, value);
@@ -190,22 +237,28 @@ function from_candid_Language_n4(_uploadFile: (file: ExternalBlob) => Promise<Ui
 }
 function from_candid_record_n3(_uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, value: {
     id: bigint;
+    status: string;
     name: string;
     language: _Language;
     message: string;
+    timestamp: bigint;
     phone: string;
 }): {
     id: bigint;
+    status: string;
     name: string;
     language: Language;
     message: string;
+    timestamp: bigint;
     phone: string;
 } {
     return {
         id: value.id,
+        status: value.status,
         name: value.name,
         language: from_candid_Language_n4(_uploadFile, _downloadFile, value.language),
         message: value.message,
+        timestamp: value.timestamp,
         phone: value.phone
     };
 }
