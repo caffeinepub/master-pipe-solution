@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   FONT FACES — Self-hosted from /assets/fonts/
+   ============================================================ */
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS — Master Pipe Solution
+   Navy-Teal primary | Warm Gold accent | Cream background
+   ============================================================ */
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Core Palette (OKLCH raw L C H values) */
+    /* Deep Navy: oklch(0.22 0.06 248) */
+    --background: 0.97 0.012 85;           /* warm cream */
+    --foreground: 0.18 0.05 248;           /* deep navy */
+
+    /* Card surfaces */
+    --card: 0.99 0.006 85;
+    --card-foreground: 0.18 0.05 248;
+
+    --popover: 0.99 0.006 85;
+    --popover-foreground: 0.18 0.05 248;
+
+    /* Primary = deep teal-navy */
+    --primary: 0.28 0.085 215;
+    --primary-foreground: 0.97 0.012 85;
+
+    /* Secondary = soft teal */
+    --secondary: 0.88 0.05 215;
+    --secondary-foreground: 0.22 0.06 215;
+
+    /* Muted */
+    --muted: 0.93 0.02 215;
+    --muted-foreground: 0.5 0.04 215;
+
+    /* Accent = warm gold */
+    --accent: 0.78 0.15 78;
+    --accent-foreground: 0.18 0.05 248;
+
+    /* Destructive */
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Borders */
+    --border: 0.88 0.03 215;
+    --input: 0.88 0.03 215;
+    --ring: 0.28 0.085 215;
+
+    /* Charts */
+    --chart-1: 0.55 0.15 215;
+    --chart-2: 0.78 0.15 78;
+    --chart-3: 0.42 0.1 160;
+    --chart-4: 0.65 0.12 248;
+    --chart-5: 0.85 0.12 70;
+
+    /* Sidebar */
+    --sidebar: 0.22 0.06 215;
+    --sidebar-foreground: 0.95 0.01 85;
+    --sidebar-primary: 0.78 0.15 78;
+    --sidebar-primary-foreground: 0.18 0.05 248;
+    --sidebar-accent: 0.3 0.08 215;
+    --sidebar-accent-foreground: 0.95 0.01 85;
+    --sidebar-border: 0.32 0.07 215;
+    --sidebar-ring: 0.78 0.15 78;
+
+    /* Brand extras */
+    --gold: 0.78 0.15 78;
+    --teal: 0.45 0.12 195;
+    --navy: 0.22 0.06 215;
+    --cream: 0.97 0.012 85;
+    --light-gold: 0.88 0.1 78;
+  }
+
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Sora", sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", serif;
+  }
+}
+
+/* ============================================================
+   CUSTOM UTILITIES
+   ============================================================ */
+
+@layer utilities {
+  .text-gold {
+    color: oklch(var(--gold));
+  }
+  .text-teal {
+    color: oklch(var(--teal));
+  }
+  .text-navy {
+    color: oklch(var(--navy));
+  }
+  .bg-navy {
+    background-color: oklch(var(--navy));
+  }
+  .bg-teal {
+    background-color: oklch(var(--teal));
+  }
+  .bg-gold {
+    background-color: oklch(var(--gold));
+  }
+  .bg-cream {
+    background-color: oklch(var(--cream));
+  }
+  .border-gold {
+    border-color: oklch(var(--gold));
+  }
+  .border-teal {
+    border-color: oklch(var(--teal));
+  }
+
+  /* Noise texture overlay utility */
+  .texture-noise::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  /* Gold shimmer text */
+  .text-gold-shimmer {
+    background: linear-gradient(
+      135deg,
+      oklch(0.75 0.16 78) 0%,
+      oklch(0.88 0.12 78) 35%,
+      oklch(0.82 0.18 65) 65%,
+      oklch(0.75 0.16 78) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Mandala background pattern */
+  .mandala-bg {
+    background-image: radial-gradient(
+        circle at 20% 50%,
+        oklch(0.45 0.12 195 / 0.08) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        oklch(0.78 0.15 78 / 0.06) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 60% 80%,
+        oklch(0.28 0.085 215 / 0.06) 0%,
+        transparent 50%
+      );
+  }
+
+  /* Glowing gold divider line */
+  .divider-gold {
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      oklch(0.78 0.15 78),
+      oklch(0.88 0.12 78),
+      oklch(0.78 0.15 78),
+      transparent
+    );
+    box-shadow: 0 0 12px oklch(0.78 0.15 78 / 0.6);
+  }
+}
+
+/* ============================================================
+   SCROLLBAR STYLING
+   ============================================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(var(--secondary));
+}
+::-webkit-scrollbar-thumb {
+  background: oklch(var(--primary));
+  border-radius: 3px;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px oklch(0.78 0.15 78 / 0.3); }
+  50% { box-shadow: 0 0 40px oklch(0.78 0.15 78 / 0.6); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
