@@ -20,6 +20,7 @@ import {
   CheckCircle,
   Clock,
   Eye,
+  FileText,
   Loader2,
   LogOut,
   MessageSquareText,
@@ -898,6 +899,80 @@ function AnalyticsPanel({ visitCount }: AnalyticsPanelProps) {
           </Card>
         </motion.div>
       </div>
+
+      {/* Page Breakdown */}
+      <motion.div
+        data-ocid="analytics.pages.panel"
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.22 }}
+      >
+        <Card className="border-border">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-gold" />
+              <CardTitle className="text-base font-display text-foreground">
+                Pages Visited
+              </CardTitle>
+              <span className="ml-1 text-xs text-muted-foreground">
+                (which sections people viewed most)
+              </span>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(() => {
+              const pageLabels: Record<string, string> = {
+                "/": "Home",
+                "/admin": "Admin Panel",
+                "/workers": "Workers",
+              };
+              const pageMap: Record<string, number> = {};
+              for (const entry of log) {
+                const key = entry.page || "/";
+                pageMap[key] = (pageMap[key] ?? 0) + 1;
+              }
+              const sorted = Object.entries(pageMap).sort(
+                (a, b) => b[1] - a[1],
+              );
+              if (sorted.length === 0) {
+                return (
+                  <p className="text-sm text-muted-foreground">
+                    No page data available yet.
+                  </p>
+                );
+              }
+              return sorted.map(([page, count]) => {
+                const pct = Math.round((count / log.length) * 100);
+                const label = pageLabels[page] ?? page;
+                return (
+                  <div key={page} className="space-y-1">
+                    <div className="flex items-center justify-between text-sm">
+                      <span
+                        className="text-foreground font-medium truncate max-w-[60%]"
+                        title={label}
+                      >
+                        {label}
+                      </span>
+                      <span className="text-muted-foreground text-xs">
+                        {count} visit{count !== 1 ? "s" : ""} ({pct}%)
+                      </span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-muted overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: "oklch(0.55 0.18 165)" }}
+                      />
+                    </div>
+                  </div>
+                );
+              });
+            })()}
+          </CardContent>
+        </Card>
+      </motion.div>
 
       {/* Recent Visits Table */}
       <motion.div
