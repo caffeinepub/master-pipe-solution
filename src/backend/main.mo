@@ -8,9 +8,9 @@ import Int "mo:core/Int";
 import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
 import Order "mo:core/Order";
-import Migration "migration";
 
-(with migration = Migration.run)
+
+
 actor {
   // Common Types
   public type Language = { #gujarati; #hindi; #english };

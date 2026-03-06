@@ -61,9 +61,9 @@ export default function Navbar({ lang, onToggleLang }: NavbarProps) {
             transition={{ type: "spring", stiffness: 400 }}
           >
             <img
-              src="/assets/generated/chakraborty-logo-transparent.dim_300x200.png"
+              src="/assets/uploads/WhatsApp-Image-2026-03-05-at-10.27.16-PM-1.jpeg"
               alt="Chakraborty Enterprise Logo"
-              className="h-10 w-auto object-contain"
+              className="h-10 w-10 object-cover rounded-full"
             />
             <div className="flex flex-col">
               <span
