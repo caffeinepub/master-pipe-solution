@@ -14,12 +14,18 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import WorkerManagement from "./components/WorkerManagement";
 import { useActor } from "./hooks/useActor";
 import type { LangKey } from "./lib/language";
+import { trackVisit } from "./utils/analytics";
 
 // ─── Main Site ────────────────────────────────────────────────────────────────
 
 function MainSite() {
   const [lang, setLang] = useState<LangKey>("en");
   const { actor } = useActor();
+
+  useEffect(() => {
+    // Track visitor analytics in localStorage
+    trackVisit();
+  }, []);
 
   useEffect(() => {
     if (actor) {

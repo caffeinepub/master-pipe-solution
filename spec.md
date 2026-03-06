@@ -1,43 +1,38 @@
 # Master Pipe Solution
 
 ## Current State
-- Public website with EN/Bengali language toggle
-- Sections: Hero, About, Services, Why Choose Us, Contact
-- Admin panel at `/admin` (PIN: mps@admin) for managing customer queries with status updates and default WhatsApp reply
-- Backend: Motoko with Contact management (submit, list, update status, default reply, visit counter)
-- WhatsApp floating button (9883004437)
+- Full website with EN/Bengali toggle, services, contact form, admin panel, worker management
+- Admin panel (`/admin`) shows: visit count (raw number), customer queries, default reply
+- Backend exposes `getVisitCount()` and `incrementVisits()` but only stores a raw counter (no per-visit data)
+- No detailed visitor analytics exist (no device, referral, page, or time data)
 
 ## Requested Changes (Diff)
 
 ### Add
-- **Worker Management segment** (admin-only, at `/workers`):
-  - Employee record: name, age, blood group, emergency contact number, mobile number, rating (1–5), level (Junior/Mid/Senior based on volume of work), zip code
-  - Work assignment: assign a job to a worker, recording customer location (address/zip) and worker location (zip) side by side
-  - List of all workers with their current assignment status
-  - Add / Edit / Delete worker functionality
-- **Terms & Conditions section** on main public website:
-  - Free repair guarantee if the same problem reappears within 15 days
-  - Warranty/guarantee revoked if worker does any back-end deal without business consent; customer loses those benefits
-  - Both in English and Bengali
-- **Safety & Security Tips** section on main public website (bilingual):
-  - For Customers: verification tips, safe payment, what to check after work
-  - For Workers (as Non-Compete Clause): no soliciting customers directly, no sharing business info, no independent competing work in the same area
-- Backend: Worker CRUD, work-assignment storage
+- Visitor Analytics panel tab inside the Admin Panel dashboard
+- Client-side analytics tracking: on every page visit, record and store in `localStorage`:
+  - Timestamp
+  - Page visited (pathname)
+  - Device type (mobile / desktop / tablet, derived from userAgent)
+  - Referral source (document.referrer — Direct, Google, WhatsApp, etc.)
+  - Time on page (tracked via beforeunload / visibility change)
+- Analytics dashboard section in AdminPanel showing:
+  - Total visit count (from backend)
+  - Visits today / this week (from localStorage log)
+  - Device breakdown (pie / bar stats)
+  - Referral source breakdown
+  - Recent visits list (last 20) with timestamp, device, referral, page, duration
+  - "Most viewed page" summary
 
 ### Modify
-- App router: add `/workers` route alongside `/admin`
-- Admin panel: add a navigation link to Workers Management
-- Navbar: no change needed (admin-only section)
+- `AdminPanel.tsx` — add a new "Analytics" tab alongside existing content; analytics data is read from `localStorage` key `mps_visits`
+- `App.tsx` — on MainSite load, call a `trackVisit()` utility that appends an entry to `localStorage` (alongside existing `actor.incrementVisits()`)
 
 ### Remove
 - Nothing removed
 
 ## Implementation Plan
-1. Extend Motoko backend with Worker type (all fields), addWorker, updateWorker, deleteWorker, getAllWorkers, assignWork, getWorkerAssignments
-2. Regenerate backend.d.ts bindings
-3. Create WorkerManagement component (list, add/edit modal, assignment panel) at route `/workers`
-4. Create TermsAndConditions component (bilingual, accordion style)
-5. Create SafetyTips component (bilingual, two-column: customer tips + worker non-compete clause)
-6. Add T&C and Safety Tips to main site between WhyChooseUs and Contact
-7. Add navigation link from AdminPanel to Workers page and back
-8. Apply deterministic data-ocid markers to all interactive surfaces
+1. Create `src/frontend/src/utils/analytics.ts` — `trackVisit()` function and `getVisitLog()` / `clearVisitLog()` helpers; entries stored in `localStorage` as JSON array (capped at 500)
+2. Update `App.tsx` to call `trackVisit()` on main site load
+3. Add `VisitorAnalytics` component section inside `AdminPanel.tsx` — new tab in the dashboard with stats cards and recent visits table
+4. Add deterministic `data-ocid` markers to all interactive surfaces in the analytics panel
