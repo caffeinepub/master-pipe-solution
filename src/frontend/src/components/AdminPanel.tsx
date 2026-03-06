@@ -602,6 +602,16 @@ function Dashboard({ onLogout }: DashboardProps) {
                 <span>{visitCount.toString()} visits</span>
               </div>
             )}
+            <a href="/workers" data-ocid="admin.workers.link">
+              <Button
+                size="sm"
+                className="gap-1.5 text-sm bg-gold hover:bg-[oklch(0.72_0.16_78)] text-navy font-semibold"
+              >
+                <Users className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Worker Management</span>
+                <span className="sm:hidden">Workers</span>
+              </Button>
+            </a>
             <Button
               variant="outline"
               size="sm"
@@ -625,18 +635,37 @@ function Dashboard({ onLogout }: DashboardProps) {
           transition={{ duration: 0.4 }}
           className="rounded-2xl bg-gradient-to-r from-[oklch(0.28_0.085_215)] to-[oklch(0.35_0.1_215)] p-5 text-primary-foreground"
         >
-          <h1 className="text-xl font-bold font-display">
-            Welcome back, Admin
-          </h1>
-          <p className="text-sm opacity-80 mt-1">
-            Manage customer queries and set your default reply message below.
-          </p>
-          {visitCount !== undefined && (
-            <div className="flex items-center gap-1.5 mt-3 text-sm opacity-70 sm:hidden">
-              <Eye className="w-3.5 h-3.5" />
-              {visitCount.toString()} total site visits
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h1 className="text-xl font-bold font-display">
+                Welcome back, Admin
+              </h1>
+              <p className="text-sm opacity-80 mt-1">
+                Manage customer queries and set your default reply message
+                below.
+              </p>
+              {visitCount !== undefined && (
+                <div className="flex items-center gap-1.5 mt-3 text-sm opacity-70 sm:hidden">
+                  <Eye className="w-3.5 h-3.5" />
+                  {visitCount.toString()} total site visits
+                </div>
+              )}
             </div>
-          )}
+            <a href="/workers" data-ocid="admin.banner.workers.link">
+              <button
+                type="button"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all"
+                style={{
+                  background: "oklch(0.78 0.15 78 / 0.2)",
+                  color: "oklch(0.95 0.01 85)",
+                  border: "1px solid oklch(0.78 0.15 78 / 0.4)",
+                }}
+              >
+                <Users className="w-4 h-4" />
+                Worker Management
+              </button>
+            </a>
+          </div>
         </motion.div>
 
         <Separator />

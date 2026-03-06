@@ -8,6 +8,18 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
+export const Assignment = IDL.Record({
+  'id' : IDL.Nat,
+  'customerName' : IDL.Text,
+  'status' : IDL.Text,
+  'workerId' : IDL.Nat,
+  'customerPhone' : IDL.Text,
+  'jobDescription' : IDL.Text,
+  'customerZip' : IDL.Text,
+  'customerAddress' : IDL.Text,
+  'workerZip' : IDL.Text,
+  'timestamp' : IDL.Int,
+});
 export const Language = IDL.Variant({
   'hindi' : IDL.Null,
   'gujarati' : IDL.Null,
@@ -22,21 +34,72 @@ export const Contact = IDL.Record({
   'timestamp' : IDL.Int,
   'phone' : IDL.Text,
 });
+export const Worker = IDL.Record({
+  'id' : IDL.Nat,
+  'age' : IDL.Nat,
+  'workVolume' : IDL.Nat,
+  'name' : IDL.Text,
+  'isAvailable' : IDL.Bool,
+  'mobileNumber' : IDL.Text,
+  'emergencyNumber' : IDL.Text,
+  'zipCode' : IDL.Text,
+  'bloodGroup' : IDL.Text,
+  'rating' : IDL.Float64,
+});
 
 export const idlService = IDL.Service({
+  'addWorker' : IDL.Func(
+      [IDL.Text, IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Nat],
+      [],
+    ),
+  'assignWork' : IDL.Func(
+      [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [IDL.Nat],
+      [],
+    ),
+  'deleteWorker' : IDL.Func([IDL.Nat], [], []),
+  'getAllAssignments' : IDL.Func([], [IDL.Vec(Assignment)], ['query']),
   'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
+  'getAllWorkers' : IDL.Func([], [IDL.Vec(Worker)], ['query']),
   'getContact' : IDL.Func([IDL.Nat], [Contact], ['query']),
   'getDefaultReply' : IDL.Func([], [IDL.Text], ['query']),
   'getVisitCount' : IDL.Func([], [IDL.Nat], ['query']),
+  'getWorker' : IDL.Func([IDL.Nat], [Worker], ['query']),
+  'getWorkerAssignments' : IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(Assignment)],
+      ['query'],
+    ),
   'incrementVisits' : IDL.Func([], [], []),
   'setDefaultReply' : IDL.Func([IDL.Text], [], []),
+  'setWorkerAvailability' : IDL.Func([IDL.Nat, IDL.Bool], [], []),
   'submitContact' : IDL.Func([IDL.Text, IDL.Text, IDL.Text, Language], [], []),
+  'updateAssignmentStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
   'updateContactStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
+  'updateWorker' : IDL.Func(
+      [IDL.Nat, IDL.Text, IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+      [],
+      [],
+    ),
+  'updateWorkerRating' : IDL.Func([IDL.Nat, IDL.Float64], [], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
+  const Assignment = IDL.Record({
+    'id' : IDL.Nat,
+    'customerName' : IDL.Text,
+    'status' : IDL.Text,
+    'workerId' : IDL.Nat,
+    'customerPhone' : IDL.Text,
+    'jobDescription' : IDL.Text,
+    'customerZip' : IDL.Text,
+    'customerAddress' : IDL.Text,
+    'workerZip' : IDL.Text,
+    'timestamp' : IDL.Int,
+  });
   const Language = IDL.Variant({
     'hindi' : IDL.Null,
     'gujarati' : IDL.Null,
@@ -51,20 +114,59 @@ export const idlFactory = ({ IDL }) => {
     'timestamp' : IDL.Int,
     'phone' : IDL.Text,
   });
+  const Worker = IDL.Record({
+    'id' : IDL.Nat,
+    'age' : IDL.Nat,
+    'workVolume' : IDL.Nat,
+    'name' : IDL.Text,
+    'isAvailable' : IDL.Bool,
+    'mobileNumber' : IDL.Text,
+    'emergencyNumber' : IDL.Text,
+    'zipCode' : IDL.Text,
+    'bloodGroup' : IDL.Text,
+    'rating' : IDL.Float64,
+  });
   
   return IDL.Service({
+    'addWorker' : IDL.Func(
+        [IDL.Text, IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Nat],
+        [],
+      ),
+    'assignWork' : IDL.Func(
+        [IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Nat],
+        [],
+      ),
+    'deleteWorker' : IDL.Func([IDL.Nat], [], []),
+    'getAllAssignments' : IDL.Func([], [IDL.Vec(Assignment)], ['query']),
     'getAllContacts' : IDL.Func([], [IDL.Vec(Contact)], ['query']),
+    'getAllWorkers' : IDL.Func([], [IDL.Vec(Worker)], ['query']),
     'getContact' : IDL.Func([IDL.Nat], [Contact], ['query']),
     'getDefaultReply' : IDL.Func([], [IDL.Text], ['query']),
     'getVisitCount' : IDL.Func([], [IDL.Nat], ['query']),
+    'getWorker' : IDL.Func([IDL.Nat], [Worker], ['query']),
+    'getWorkerAssignments' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Vec(Assignment)],
+        ['query'],
+      ),
     'incrementVisits' : IDL.Func([], [], []),
     'setDefaultReply' : IDL.Func([IDL.Text], [], []),
+    'setWorkerAvailability' : IDL.Func([IDL.Nat, IDL.Bool], [], []),
     'submitContact' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, Language],
         [],
         [],
       ),
+    'updateAssignmentStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
     'updateContactStatus' : IDL.Func([IDL.Nat, IDL.Text], [], []),
+    'updateWorker' : IDL.Func(
+        [IDL.Nat, IDL.Text, IDL.Nat, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        [],
+      ),
+    'updateWorkerRating' : IDL.Func([IDL.Nat, IDL.Float64], [], []),
   });
 };
 

@@ -10,6 +10,18 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface Assignment {
+  'id' : bigint,
+  'customerName' : string,
+  'status' : string,
+  'workerId' : bigint,
+  'customerPhone' : string,
+  'jobDescription' : string,
+  'customerZip' : string,
+  'customerAddress' : string,
+  'workerZip' : string,
+  'timestamp' : bigint,
+}
 export interface Contact {
   'id' : bigint,
   'status' : string,
@@ -22,15 +34,47 @@ export interface Contact {
 export type Language = { 'hindi' : null } |
   { 'gujarati' : null } |
   { 'english' : null };
+export interface Worker {
+  'id' : bigint,
+  'age' : bigint,
+  'workVolume' : bigint,
+  'name' : string,
+  'isAvailable' : boolean,
+  'mobileNumber' : string,
+  'emergencyNumber' : string,
+  'zipCode' : string,
+  'bloodGroup' : string,
+  'rating' : number,
+}
 export interface _SERVICE {
+  'addWorker' : ActorMethod<
+    [string, bigint, string, string, string, string],
+    bigint
+  >,
+  'assignWork' : ActorMethod<
+    [bigint, string, string, string, string, string],
+    bigint
+  >,
+  'deleteWorker' : ActorMethod<[bigint], undefined>,
+  'getAllAssignments' : ActorMethod<[], Array<Assignment>>,
   'getAllContacts' : ActorMethod<[], Array<Contact>>,
+  'getAllWorkers' : ActorMethod<[], Array<Worker>>,
   'getContact' : ActorMethod<[bigint], Contact>,
   'getDefaultReply' : ActorMethod<[], string>,
   'getVisitCount' : ActorMethod<[], bigint>,
+  'getWorker' : ActorMethod<[bigint], Worker>,
+  'getWorkerAssignments' : ActorMethod<[bigint], Array<Assignment>>,
   'incrementVisits' : ActorMethod<[], undefined>,
   'setDefaultReply' : ActorMethod<[string], undefined>,
+  'setWorkerAvailability' : ActorMethod<[bigint, boolean], undefined>,
   'submitContact' : ActorMethod<[string, string, string, Language], undefined>,
+  'updateAssignmentStatus' : ActorMethod<[bigint, string], undefined>,
   'updateContactStatus' : ActorMethod<[bigint, string], undefined>,
+  'updateWorker' : ActorMethod<
+    [bigint, string, bigint, string, string, string, string],
+    undefined
+  >,
+  'updateWorkerRating' : ActorMethod<[bigint, number], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

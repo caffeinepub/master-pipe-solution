@@ -1,53 +1,77 @@
 import Map "mo:core/Map";
 import Nat "mo:core/Nat";
-import Iter "mo:core/Iter";
-import Text "mo:core/Text";
-import Array "mo:core/Array";
 
 module {
-  public type Language = { #gujarati; #hindi; #english };
-
-  public type OldContact = {
-    id : Nat;
-    name : Text;
-    phone : Text;
-    message : Text;
-    language : Language;
+  type OldActor = {
+    contacts : Map.Map<Nat, OldContact>;
+    contactId : Nat;
+    defaultReply : Text;
+    pageVisits : Nat;
   };
 
-  public type NewContact = {
+  type OldContact = {
     id : Nat;
     name : Text;
     phone : Text;
     message : Text;
-    language : Language;
+    language : OldLanguage;
     status : Text;
     timestamp : Int;
   };
 
-  public type OldActor = {
-    contacts : Map.Map<Nat, OldContact>;
-    contactId : Nat;
-    pageVisits : Nat;
+  type OldLanguage = {
+    #gujarati;
+    #hindi;
+    #english;
   };
 
-  public type NewActor = {
-    contacts : Map.Map<Nat, NewContact>;
+  type NewActor = {
+    contacts : Map.Map<Nat, OldContact>;
     contactId : Nat;
-    pageVisits : Nat;
     defaultReply : Text;
+    pageVisits : Nat;
+    workers : Map.Map<Nat, NewWorker>;
+    workerIdCounter : Nat;
+    assignments : Map.Map<Nat, NewAssignment>;
+    assignmentIdCounter : Nat;
+  };
+
+  type NewWorker = {
+    id : Nat;
+    name : Text;
+    age : Nat;
+    bloodGroup : Text;
+    emergencyNumber : Text;
+    mobileNumber : Text;
+    rating : Float;
+    workVolume : Nat;
+    zipCode : Text;
+    isAvailable : Bool;
+  };
+
+  type NewAssignment = {
+    id : Nat;
+    workerId : Nat;
+    customerName : Text;
+    customerPhone : Text;
+    customerAddress : Text;
+    customerZip : Text;
+    workerZip : Text;
+    jobDescription : Text;
+    status : Text;
+    timestamp : Int;
   };
 
   public func run(old : OldActor) : NewActor {
-    let newContacts = old.contacts.map<Nat, OldContact, NewContact>(
-      func(_id, contact) {
-        {
-          contact with
-          status = "unknown";
-          timestamp = 0;
-        };
-      }
-    );
-    { old with contacts = newContacts; defaultReply = "Thank you for contacting Master Pipe Solution. We will get back to you shortly." };
+    {
+      contacts = old.contacts;
+      contactId = old.contactId;
+      defaultReply = old.defaultReply;
+      pageVisits = old.pageVisits;
+      workers = Map.empty<Nat, NewWorker>();
+      workerIdCounter = 0;
+      assignments = Map.empty<Nat, NewAssignment>();
+      assignmentIdCounter = 0;
+    };
   };
 };

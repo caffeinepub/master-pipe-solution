@@ -7,8 +7,11 @@ import DevotionalDivider from "./components/DevotionalDivider";
 import Footer from "./components/Footer";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
+import SafetyTips from "./components/SafetyTips";
 import ServicesSection from "./components/ServicesSection";
+import TermsAndConditions from "./components/TermsAndConditions";
 import WhyChooseUs from "./components/WhyChooseUs";
+import WorkerManagement from "./components/WorkerManagement";
 import { useActor } from "./hooks/useActor";
 import type { LangKey } from "./lib/language";
 
@@ -36,6 +39,8 @@ function MainSite() {
         <ServicesSection lang={lang} />
         <DevotionalDivider />
         <WhyChooseUs lang={lang} />
+        <TermsAndConditions lang={lang} />
+        <SafetyTips lang={lang} />
         <ContactSection lang={lang} />
       </main>
       <Footer lang={lang} />
@@ -68,7 +73,9 @@ function MainSite() {
 
 // ─── Root Router ──────────────────────────────────────────────────────────────
 
-const isAdminRoute = window.location.pathname === "/admin";
+const pathname = window.location.pathname;
+const isAdminRoute = pathname === "/admin";
+const isWorkersRoute = pathname === "/workers";
 
 export default function App() {
   if (isAdminRoute) {
@@ -76,6 +83,15 @@ export default function App() {
       <>
         <Toaster richColors position="top-right" />
         <AdminPanel />
+      </>
+    );
+  }
+
+  if (isWorkersRoute) {
+    return (
+      <>
+        <Toaster richColors position="top-right" />
+        <WorkerManagement />
       </>
     );
   }

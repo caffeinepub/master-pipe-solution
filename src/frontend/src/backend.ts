@@ -89,6 +89,30 @@ export class ExternalBlob {
         return this;
     }
 }
+export interface Assignment {
+    id: bigint;
+    customerName: string;
+    status: string;
+    workerId: bigint;
+    customerPhone: string;
+    jobDescription: string;
+    customerZip: string;
+    customerAddress: string;
+    workerZip: string;
+    timestamp: bigint;
+}
+export interface Worker {
+    id: bigint;
+    age: bigint;
+    workVolume: bigint;
+    name: string;
+    isAvailable: boolean;
+    mobileNumber: string;
+    emergencyNumber: string;
+    zipCode: string;
+    bloodGroup: string;
+    rating: number;
+}
 export interface Contact {
     id: bigint;
     status: string;
@@ -104,18 +128,85 @@ export enum Language {
     english = "english"
 }
 export interface backendInterface {
+    addWorker(name: string, age: bigint, bloodGroup: string, emergencyNumber: string, mobileNumber: string, zipCode: string): Promise<bigint>;
+    assignWork(workerId: bigint, customerName: string, customerPhone: string, customerAddress: string, customerZip: string, jobDescription: string): Promise<bigint>;
+    deleteWorker(id: bigint): Promise<void>;
+    getAllAssignments(): Promise<Array<Assignment>>;
     getAllContacts(): Promise<Array<Contact>>;
+    getAllWorkers(): Promise<Array<Worker>>;
     getContact(id: bigint): Promise<Contact>;
     getDefaultReply(): Promise<string>;
     getVisitCount(): Promise<bigint>;
+    getWorker(id: bigint): Promise<Worker>;
+    getWorkerAssignments(workerId: bigint): Promise<Array<Assignment>>;
     incrementVisits(): Promise<void>;
     setDefaultReply(text: string): Promise<void>;
+    setWorkerAvailability(id: bigint, isAvailable: boolean): Promise<void>;
     submitContact(name: string, phone: string, message: string, language: Language): Promise<void>;
+    updateAssignmentStatus(id: bigint, status: string): Promise<void>;
     updateContactStatus(id: bigint, status: string): Promise<void>;
+    updateWorker(id: bigint, name: string, age: bigint, bloodGroup: string, emergencyNumber: string, mobileNumber: string, zipCode: string): Promise<void>;
+    updateWorkerRating(id: bigint, rating: number): Promise<void>;
 }
 import type { Contact as _Contact, Language as _Language } from "./declarations/backend.did.d.ts";
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
+    async addWorker(arg0: string, arg1: bigint, arg2: string, arg3: string, arg4: string, arg5: string): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.addWorker(arg0, arg1, arg2, arg3, arg4, arg5);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.addWorker(arg0, arg1, arg2, arg3, arg4, arg5);
+            return result;
+        }
+    }
+    async assignWork(arg0: bigint, arg1: string, arg2: string, arg3: string, arg4: string, arg5: string): Promise<bigint> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.assignWork(arg0, arg1, arg2, arg3, arg4, arg5);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.assignWork(arg0, arg1, arg2, arg3, arg4, arg5);
+            return result;
+        }
+    }
+    async deleteWorker(arg0: bigint): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.deleteWorker(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.deleteWorker(arg0);
+            return result;
+        }
+    }
+    async getAllAssignments(): Promise<Array<Assignment>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllAssignments();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllAssignments();
+            return result;
+        }
+    }
     async getAllContacts(): Promise<Array<Contact>> {
         if (this.processError) {
             try {
@@ -128,6 +219,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getAllContacts();
             return from_candid_vec_n1(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getAllWorkers(): Promise<Array<Worker>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getAllWorkers();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getAllWorkers();
+            return result;
         }
     }
     async getContact(arg0: bigint): Promise<Contact> {
@@ -172,6 +277,34 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async getWorker(arg0: bigint): Promise<Worker> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getWorker(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getWorker(arg0);
+            return result;
+        }
+    }
+    async getWorkerAssignments(arg0: bigint): Promise<Array<Assignment>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getWorkerAssignments(arg0);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getWorkerAssignments(arg0);
+            return result;
+        }
+    }
     async incrementVisits(): Promise<void> {
         if (this.processError) {
             try {
@@ -200,6 +333,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async setWorkerAvailability(arg0: bigint, arg1: boolean): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.setWorkerAvailability(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.setWorkerAvailability(arg0, arg1);
+            return result;
+        }
+    }
     async submitContact(arg0: string, arg1: string, arg2: string, arg3: Language): Promise<void> {
         if (this.processError) {
             try {
@@ -214,6 +361,20 @@ export class Backend implements backendInterface {
             return result;
         }
     }
+    async updateAssignmentStatus(arg0: bigint, arg1: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateAssignmentStatus(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateAssignmentStatus(arg0, arg1);
+            return result;
+        }
+    }
     async updateContactStatus(arg0: bigint, arg1: string): Promise<void> {
         if (this.processError) {
             try {
@@ -225,6 +386,34 @@ export class Backend implements backendInterface {
             }
         } else {
             const result = await this.actor.updateContactStatus(arg0, arg1);
+            return result;
+        }
+    }
+    async updateWorker(arg0: bigint, arg1: string, arg2: bigint, arg3: string, arg4: string, arg5: string, arg6: string): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateWorker(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateWorker(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
+            return result;
+        }
+    }
+    async updateWorkerRating(arg0: bigint, arg1: number): Promise<void> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.updateWorkerRating(arg0, arg1);
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.updateWorkerRating(arg0, arg1);
             return result;
         }
     }
